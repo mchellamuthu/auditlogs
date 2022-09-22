@@ -26,10 +26,6 @@ class AuditLogServiceProvider extends ServiceProvider
         //
     }
 
-    public function configureModels()
-    {
-
-    }
 
 
 }
