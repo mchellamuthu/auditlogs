@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use ReflectionClass;
 use App\Models\AuditLog;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,6 +18,7 @@ trait Auditable
         });
         static::updating(function (Model $model) {
             $old_value = [];
+            // $model->attributesToArray
             if (!empty($model->allowedAudits)) {
 
                 foreach ($model->allowedAudits as $attribute) {
@@ -26,15 +28,18 @@ trait Auditable
                 $old_value = $model->getRawOriginal();
             }
             if (!empty($model->auditableRelationships)) {
-                foreach ($model->auditableRelationships as $relationships) {
-                    $old_value[$relationships] = $model->relationships;
+                foreach ($model->auditableRelationships as $relationship) {
+                    $old_value[$relationship] = $model->$relationship->attributesToArray();
                 }
             }
-
             self::audit('updated', $model, $old_value);
         });
     }
-
+    protected static function getRelationType($model, $method)
+    {
+        $type = get_class($model->{$method}());
+        return $type;
+    }
     protected static function audit($action, $model, $old_value = null)
     {
         $data = [

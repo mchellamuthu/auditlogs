@@ -4,7 +4,8 @@ namespace App\Models;
 
 use App\Traits\Auditable;
 use Illuminate\Database\Eloquent\Model;
-use Jenssegers\Mongodb\Relations\BelongsTo;
+
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
@@ -28,10 +29,10 @@ class Post extends Model
     /**
      * Get the category that owns the Post
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function category(): BelongsTo
     {
-        return $this->belongsTo(Category::class, 'catergory_id', 'id');
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 }
