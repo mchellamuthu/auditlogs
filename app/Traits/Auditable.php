@@ -28,7 +28,7 @@ trait Auditable
             if (!empty($model->auditableRelationships)) {
                 foreach ($model->auditableRelationships as $relationship) {
                     /**
-                     * get the relationship type
+                     * get relationship type
                      */
                     $relationType = self::getRelationType($model, $relationship['name']);
                     /**
