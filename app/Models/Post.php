@@ -10,22 +10,28 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
-    use HasFactory, Auditable;
+    use HasFactory;
+    use Auditable;
 
     protected $guarded = ['id'];
     /**
-    * Auditable attributes allow to the Audit.
-    *
-    * @var array
-    */
-    protected $allowedAudits = ['title','body'];
+     * Auditable attributes allow to the Audit.
+     *
+     * @var array
+     */
+    protected $allowedAudits = ['title', 'body'];
 
     /**
      * Auditable  relationships.
      *
      * @var array
      */
-    protected $auditableRelationships = ['category'];
+    protected $auditableRelationships = [
+        [
+            'name' => 'category',
+            'fields' => ['name']
+        ]
+    ];
     /**
      * Get the category that owns the Post
      *

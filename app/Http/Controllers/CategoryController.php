@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $data = Post::all();
+        $data = Category::all();
         return response()->json(['data' => $data]);
     }
 
@@ -26,41 +26,38 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $data = Post::create([
-            'title' => $request->title,
-            'body' => $request->body,
-            'category_id'=>$request->category_id
+        $request->validate([
+            'name' => 'required|string',
         ]);
-
-        return response()->json(['data' => $data]);
+        Category::create([
+            'name' => $request->name,
+        ]);
+        return response()->json(['message' => 'created']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post)
+    public function show(Category $category)
     {
-        return response()->json(['data' => $post]);
+        return response()->json(['data' => $category]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Category $category)
     {
-        $post->title = $request->title;
-        $post->body = $request->body;
-        $post->category_id = $request->category;
-
-        if ($post->isDirty()) {
-            $post->save();
+        $category->name = $request->name;
+        if ($category->isDirty()) {
+            $category->save();
         }
         return response()->json(['message' => 'updated']);
     }
@@ -68,11 +65,12 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Post  $post
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
+    public function destroy(Category $category)
     {
-        //
+        $category->delete();
+        return response()->json(['message' => 'deleted']);
     }
 }
